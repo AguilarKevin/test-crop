@@ -18,6 +18,15 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+
+            .alert{
+                padding: 8px 4px;
+            }
+
+            .alert-danger{
+                background: #ff8d8d;
+                color: white;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -28,11 +37,11 @@
 
             <label >
                 dx
-                <input type='text' name="dx" />
+                <input type='number' name="dx" />
             </label>
             <label >
                 dy
-                <input type='text' name="dy" />
+                <input type='number' name="dy" />
             </label>
             <label>
                 scale
@@ -40,6 +49,16 @@
             </label>
             <button type="submit">Submit</button>
         </form>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
     </div>
 

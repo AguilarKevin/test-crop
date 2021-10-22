@@ -34,6 +34,11 @@
             inset-block-end: 0;
             inset-inline-start: 0;
         }
+
+        .image-result{
+            width: max-content;
+            height: max-content;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -43,7 +48,7 @@
             <img src="storage/images/original.png" alt="result"/>
         </div>
         <h1>Original</h1>
-        <img src="storage/images/result.png" alt="result"/>
+        <img class="image-result" src="storage/images/result.png" alt="result"/>
         <h1>crop</h1>
     </div>
 </body>

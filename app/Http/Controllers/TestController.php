@@ -11,7 +11,7 @@ class TestController extends Controller
     function crop(Request $request){
 
         $data = $this->validate($request, [
-            'image' => 'required|image',
+            'image' => 'required|image|dimensions:min_width=1024,min_height=1024',
             'dx' => 'required',
             'dy' => 'required',
             'scale' => 'required'
@@ -19,22 +19,33 @@ class TestController extends Controller
 
         $image = Image::make($data['image']->getRealPath());
 
-        $scaledProps = [
-            'width' => $image->getWidth()*$data['scale'],
-            'height'=> $image->getHeight()*$data['scale'],
-            'dx' => (int)($data['dx'] * $data['scale']),
-            'dy' => (int)($data['dy'] * $data['scale'])
-        ];
+        $width = $image->getWidth()*$data['scale'];
+        $height= $image->getHeight()*$data['scale'];
+        $dx = (int)($data['dx'] <= 0 ? 0 : $data['dx'] * $data['scale']);
+        $dy = (int)($data['dy'] <= 0 ? 0 : $data['dy'] * $data['scale']);
 
-        $scaledImage = $image->resize($scaledProps['width'], $scaledProps['height'], function ($constraint){
+        $scaledImage = $image->resize($width, $height, function ($constraint){
             $constraint->aspectRatio();
-        });
+        })->save('storage/images/result.png');
 
-        $scaledImage->crop(400,480, $scaledProps['dx'],  $scaledProps['dy'])->save('storage/images/result.png');
+        $newWidth = $scaledImage->getWidth() - $dx;
+        $newHeight = $scaledImage->getHeight() - $dy;
+
+        if($newWidth > 400){
+            $newWidth = 400;
+        }
+
+        if($newHeight > 480){
+            $newHeight = 480;
+        }
+
+//        dd($scaledImage->getHeight(), $newHeight);
+
+        $scaledImage->crop($newWidth, $newHeight , $dx,  $dy)->save('storage/images/result.png');
 
         $request->file('image')->storeAs('/images', 'original.png', 'public');
 
-
         return redirect()->to('/result');
+
     }
 }

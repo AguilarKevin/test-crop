@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -23,21 +24,4 @@ Route::get('/result',function (){
     return view('result');
 });
 
-Route::post('/test', function (\Illuminate\Http\Request $request){
-
-
-    $dx = $request->get('dx');
-    $dy = $request->get('dy');
-    $scale = $request->get('scale');
-    dd(($dx*$scale),$dy*$scale,);
-
-    $path = $request->file('image')->storeAs('images','result.png', 'public');
-
-
-    $img = Image::make($path)->crop(400, 480, $dx, $dy);
-
-    return $img->response('png');
-
-//    $image = Image::make('public/storage/images/result.png')->resize(300, 200);
-//    return redirect('/result');
-});
+Route::post('/test', [TestController::class,'crop']);

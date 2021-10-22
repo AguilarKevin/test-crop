@@ -19,6 +19,10 @@
             font-family: 'Nunito', sans-serif;
         }
 
+        .flex{
+        display: flex;
+        }
+
         .photo-frame{
             width: 400px;
             height: 480px;
@@ -33,14 +37,14 @@
     </style>
 </head>
 <body class="antialiased">
-<div>
-    <div class="photo-frame">
+    <div class="flex">
+
+        <div class="photo-frame">
+            <img src="storage/images/original.png" alt="result"/>
+        </div>
+        <h1>Original</h1>
         <img src="storage/images/result.png" alt="result"/>
+        <h1>crop</h1>
     </div>
-    <a href="/">home</a>
-
-</div>
-
-
 </body>
 </html>

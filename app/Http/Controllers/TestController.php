@@ -39,10 +39,9 @@ class TestController extends Controller
 
         //width = scaledWidth - offsetLeft
         //height = scaledWidth - offsetTop
-        $width = $scaledWidth - $offsetX > 400 ? 400 : $scaledWidth - $offsetX ;
-        $height = $scaledHeight - $offsetY > 400 ? 400 : $scaledHeight - $offsetY ;
-
-//        dd($deltaX,$deltaY, $width , $height);
+        $width = $scaledWidth - $offsetX > 400 ? 400 - $offsetX : $scaledWidth - $offsetX ;
+        $height = $scaledHeight - $offsetY > 480 ? 480 - $offsetY : $scaledHeight - $offsetY ;
+        
 
         $scaledImage->crop($width, $height , $deltaX,  $deltaY)->save('storage/images/result.png');
 

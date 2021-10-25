@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Intervention\Image\Facades\Image;
 
 class TestController extends Controller
@@ -19,29 +21,30 @@ class TestController extends Controller
 
         $image = Image::make($data['image']->getRealPath());
 
-        $width = $image->getWidth()*$data['scale'];
-        $height= $image->getHeight()*$data['scale'];
-        $dx = (int)($data['dx'] <= 0 ? 0 : $data['dx'] * $data['scale']);
-        $dy = (int)($data['dy'] <= 0 ? 0 : $data['dy'] * $data['scale']);
+        $scaledWidth = (int)($image->getWidth() * $data['scale']);
+        $scaledHeight = (int)($image->getHeight() * $data['scale']);
 
-        $scaledImage = $image->resize($width, $height, function ($constraint){
+        $scaledImage = $image->resize($scaledWidth, $scaledHeight, function ($constraint){
             $constraint->aspectRatio();
-        })->save('storage/images/result.png');
+        });
 
-        $newWidth = $scaledImage->getWidth() - $dx;
-        $newHeight = $scaledImage->getHeight() - $dy;
+//        dd($scaledImage->getWidth(), $scaledImage->getHeight());
 
-        if($newWidth > 400){
-            $newWidth = 400;
-        }
 
-        if($newHeight > 480){
-            $newHeight = 480;
-        }
+        $deltaX = (int)($data['dx'] < 0 ? -($data['dx']): 0);
+        $deltaY = (int)($data['dy'] < 0 ? -($data['dy']): 0);
 
-//        dd($scaledImage->getHeight(), $newHeight);
+        $offsetX =  (int)($data['dx'] < 0 ? -($data['dx']): $data['dx']);
+        $offsetY = (int)($data['dy'] < 0 ? -($data['dy']): $data['dy']);
 
-        $scaledImage->crop($newWidth, $newHeight , $dx,  $dy)->save('storage/images/result.png');
+        //width = scaledWidth - offsetLeft
+        //height = scaledWidth - offsetTop
+        $width = $scaledWidth - $offsetX > 400 ? 400 : $scaledWidth - $offsetX ;
+        $height = $scaledHeight - $offsetY > 400 ? 400 : $scaledHeight - $offsetY ;
+
+//        dd($deltaX,$deltaY, $width , $height);
+
+        $scaledImage->crop($width, $height , $deltaX,  $deltaY)->save('storage/images/result.png');
 
         $request->file('image')->storeAs('/images', 'original.png', 'public');
 

@@ -38,6 +38,7 @@
         .image-result{
             width: max-content;
             height: max-content;
+            border: crimson solid 1px;
         }
     </style>
 </head>

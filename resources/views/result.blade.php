@@ -21,36 +21,41 @@
 
         .flex{
         display: flex;
-        }
+            align-items:start;
 
-        .photo-frame{
-            width: 400px;
-            height: 480px;
-        }
-
-        .photo-frame img{
-            width: 100%;
-            height: 100%;
-            inset-block-end: 0;
-            inset-inline-start: 0;
         }
 
         .image-result{
-            width: max-content;
-            height: max-content;
+            background: #9a9a9a;
+        }
+
+        .image-result img{
             border: crimson solid 1px;
+        }
+
+        .image-result2{
+            background: #aaaaaa;
+        }
+
+        .image-result2 img{
+            border: greenyellow solid 1px;
         }
     </style>
 </head>
 <body class="antialiased">
     <div class="flex">
-
-        <div class="photo-frame">
-            <img src="storage/images/original.png" alt="result"/>
+        <div>
+           <div class="image-result">
+               <img  src="storage/images/result.png" alt="result"/>
+           </div>
+            <h1>crop 400x480</h1>
         </div>
-        <h1>Original</h1>
-        <img class="image-result" src="storage/images/result.png" alt="result"/>
-        <h1>crop</h1>
+        <div>
+            <div class="image-result2">
+                <img  src="storage/images/result2.png" alt="result"/>
+            </div>
+            <h1>crop 800x960</h1>
+        </div>
     </div>
 </body>
 </html>
